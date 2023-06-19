@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des pointages</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Utilisateur</th>
+                <th>Chantier</th>
+                <th>Date</th>
+                <th>Durée</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pointage in pointages %}
+            <tr>
+                <td>{{ pointage.user.nom }} {{ pointage.user.prenom }}</td>
+                <td>{{ pointage.chantier.nom }}</td>
+                <td>{{ pointage.date|date('Y-m-d') }}</td>
+                <td>{{ pointage.duree }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
