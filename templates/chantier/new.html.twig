@@ -1,12 +1,25 @@
 {% extends 'home/index.html.twig' %}
 
+{% block title %}Créer un nouveau chantier{% endblock %}
+
 {% block body %}
-    <h1>Nouveau chantier</h1>
+    <h1>Créer un nouveau chantier</h1>
 
     {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit">Sauvegarder</button>
+        <div class="form-group">
+            {{ form_label(form.nom) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.adresse) }}
+            {{ form_widget(form.adresse, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.dateDebut) }}
+            {{ form_widget(form.dateDebut, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Créer</button>
     {{ form_end(form) }}
 
-    <a href="{{ path('chantier_index') }}">Retour à la liste</a>
+    <a href="{{ path('chantier_index') }}" class="btn btn-link">Retour à la liste des chantiers</a>
 {% endblock %}

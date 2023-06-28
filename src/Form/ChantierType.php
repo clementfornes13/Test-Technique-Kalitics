@@ -14,9 +14,18 @@ class ChantierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom', TextType::class)
-            ->add('adresse', TextType::class)
-            ->add('dateDebut', DateType::class)
+            ->add('nom', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('adresse', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('dateDebut', DateType::class, [
+                'widget' => 'choice',
+                'html5' => false,
+                'format' => 'dd/MM/yyyy',
+                'attr' => ['class' => 'datepicker'],
+            ])
         ;
     }
 

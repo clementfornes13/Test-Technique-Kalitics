@@ -6,6 +6,7 @@ use App\Entity\Pointage;
 use App\Entity\User;
 use App\Entity\Chantier;
 use App\Form\PointageType;
+use App\Repository\ChantierRepository;
 use App\Repository\UserRepository;
 use App\Repository\PointageRepository;
 use Doctrine\ORM\EntityManagerInterface;

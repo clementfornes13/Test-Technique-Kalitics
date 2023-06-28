@@ -13,6 +13,7 @@ use DateTimeInterface;
     fields: ["utilisateur", "date"],
     message: "Vous ne pouvez pointer qu'une seule fois par jour pour un utilisateur."
 )]
+#[ORM\Table(name: "`pointage`")]
 class Pointage
 {
     #[ORM\Id]

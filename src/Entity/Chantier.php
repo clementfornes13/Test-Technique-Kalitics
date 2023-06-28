@@ -3,10 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\ChantierRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use DateTime;
+use DateTimeInterface;
 
 #[ORM\Entity(repositoryClass: ChantierRepository::class)]
+#[ORM\Table(name: "chantier")]
 class Chantier
 {
     #[ORM\Id]
@@ -17,16 +22,14 @@ class Chantier
     #[ORM\Column(type: "string", length: 255)]
     private ?string $nom = null;
 
-
     #[ORM\Column(type: "string", length: 255)]
     private ?string $adresse = null;
-
 
     #[ORM\Column(type: "date")]
     private ?\DateTimeInterface $dateDebut = null;
 
     #[ORM\OneToMany(mappedBy: "chantier", targetEntity: Pointage::class)]
-    private $pointages;
+    private Collection $pointages;
 
     public function __construct()
     {
@@ -73,9 +76,10 @@ class Chantier
 
         return $this;
     }
+
     /**
-     * @return Collection|Pointage[]
-    */
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Pointage[]
+     */
     public function getPointages(): Collection
     {
         return $this->pointages;

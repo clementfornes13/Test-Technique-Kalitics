@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Chantier;
+use App\Entity\Pointage;
 use App\Form\ChantierType;
 use App\Repository\ChantierRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ChantierController extends AbstractController
 {
@@ -44,7 +46,6 @@ class ChantierController extends AbstractController
             'nombre_heures_cumulees_pointees' => $nombreHeuresCumuleesPointees,
         ]);
     }
-
     #[Route('/chantier/new', name: 'chantier_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
