@@ -1,26 +1,46 @@
-{% extends 'base.html.twig' %}
-
+{% extends 'home/index.html.twig' %}
+{% block title %}Pointages{% endblock %}
 {% block body %}
-    <h1>Liste des pointages</h1>
-
+    <h1>Pointages</h1>
     <table>
         <thead>
             <tr>
                 <th>Utilisateur</th>
                 <th>Chantier</th>
-                <th>Date</th>
-                <th>Durée</th>
+                <th>Date du pointage</th>
+                <th>Durée de travail</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for pointage in pointages %}
-            <tr>
-                <td>{{ pointage.user.nom }} {{ pointage.user.prenom }}</td>
-                <td>{{ pointage.chantier.nom }}</td>
-                <td>{{ pointage.date|date('Y-m-d') }}</td>
-                <td>{{ pointage.duree }}</td>
-            </tr>
-        {% endfor %}
+            {% for pointage in pointages %}
+                <tr>
+                    <td>
+                        {% if pointage.utilisateur is null %}
+                            Utilisateur supprimé
+                        {% else %}
+                            {{ pointage.utilisateur.nom }} {{ pointage.utilisateur.prenom }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pointage.chantier is null %}
+                            Chantier supprimé
+                        {% else %}
+                            {{ pointage.chantier.nom }}
+                        {% endif %}
+                    </td>
+                    <td>{{ pointage.date|date('d-m-Y') }}</td>
+                    <td>{{ pointage.duree|date('H:i') }}</td>
+                    <td>
+                    <form method="post" action="{{ path('pointage_delete', {id: pointage.id}) }}" style="display: inline-block">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ pointage.id) }}">
+                        <button class="btn btn-danger">Supprimer</button>
+                    </form>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
+    <a href="{{ path('pointage_new') }}" class="btn btn-primary">Pointer un nouvel utilisateur</a>
 {% endblock %}

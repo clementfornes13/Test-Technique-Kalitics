@@ -5,22 +5,25 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
+#[ORM\Table(name: "`user`")]
 class User
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: "string", length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: "string", length: 255)]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 255)]
+
+    #[ORM\Column(type: "string", length: 255)]
     private ?string $matricule = null;
 
     public function getId(): ?int
@@ -33,7 +36,7 @@ class User
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
@@ -45,7 +48,7 @@ class User
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(?string $prenom): self
     {
         $this->prenom = $prenom;
 
@@ -57,7 +60,7 @@ class User
         return $this->matricule;
     }
 
-    public function setMatricule(string $matricule): static
+    public function setMatricule(?string $matricule): self
     {
         $this->matricule = $matricule;
 

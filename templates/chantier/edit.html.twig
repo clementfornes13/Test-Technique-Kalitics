@@ -1,0 +1,16 @@
+{% extends 'home/index.html.twig' %}
+
+{% block body %}
+    <h1>Éditer Chantier</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Sauvegarder</button>
+    {{ form_end(form) }}
+    <form method="post" action="{{ path('chantier_delete', {'id': chantier.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chantier?');">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chantier.id) }}">
+        <button class="btn btn-danger">Supprimer</button>
+    </form>
+    <a href="{{ path('chantier_show', {'id': chantier.id}) }}">Retour</a>
+{% endblock %}

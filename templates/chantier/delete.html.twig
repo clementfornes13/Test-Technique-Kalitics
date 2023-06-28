@@ -1,0 +1,12 @@
+{% extends 'home/index.html.twig' %}
+{% block title %}Supprimer le chantier{% endblock %}
+{% block body %}
+    <h1>Supprimer le chantier</h1>
+    <p>Êtes-vous sûr de vouloir Supprimer le chantier ?"{{ chantier.nom }} {{ chantier.adresse }}" ?</p>
+    <form action="{{ path('chantier_delete', {id: chantier.id}) }}" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer ce chantier ?')">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chantier.id) }}">
+        <button type="submit">Supprimer</button>
+    </form>
+    <a href="{{ path('chantier_index') }}">Retour à la liste</a>
+{% endblock %}

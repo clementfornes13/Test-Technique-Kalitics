@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Pointage;
+use App\Entity\Chantier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -38,6 +39,25 @@ class PointageRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getTotalHoursForUserInWeek(int $userId, \DateTimeInterface $weekStart, \DateTimeInterface $weekEnd): float
+    {
+        $pointages = $this->createQueryBuilder('p')
+            ->where('p.utilisateur = :userId')
+            ->andWhere('p.date BETWEEN :weekStart AND :weekEnd')
+            ->setParameter('userId', $userId)
+            ->setParameter('weekStart', $weekStart)
+            ->setParameter('weekEnd', $weekEnd)
+            ->getQuery()
+            ->getResult();
+    
+        $totalMinutes = 0;
+        foreach ($pointages as $pointage) {
+            $totalMinutes += $pointage->getDureeInMinutes();
+        }
+    
+        return $totalMinutes / 60;
+    }    
 
 //    /**
 //     * @return Pointage[] Returns an array of Pointage objects

@@ -5,14 +5,9 @@ namespace App\Repository;
 use App\Entity\Chantier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Doctrine\ORM\Query\Expr\Func;
 /**
  * @extends ServiceEntityRepository<Chantier>
- *
- * @method Chantier|null find($id, $lockMode = null, $lockVersion = null)
- * @method Chantier|null findOneBy(array $criteria, array $orderBy = null)
- * @method Chantier[]    findAll()
- * @method Chantier[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ChantierRepository extends ServiceEntityRepository
 {
@@ -21,46 +16,37 @@ class ChantierRepository extends ServiceEntityRepository
         parent::__construct($registry, Chantier::class);
     }
 
-    public function save(Chantier $entity, bool $flush = false): void
+    public function getNombrePersonnesPointees(Chantier $chantier): int
     {
-        $this->getEntityManager()->persist($entity);
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(DISTINCT p.utilisateur)')
+            ->join('c.pointages', 'p')
+            ->andWhere('c = :chantier')
+            ->setParameter('chantier', $chantier)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }    
+    
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(Chantier $entity, bool $flush = false): void
+    public function getNombreHeuresCumuleesPointees(Chantier $chantier): string
     {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        $pointages = $chantier->getPointages();
+        $totalSeconds = 0;
+    
+        foreach ($pointages as $pointage) {
+            $duree = $pointage->getDuree();
+            $hours = $duree->format('H');
+            $minutes = $duree->format('i');
+            $seconds = $hours * 3600 + $minutes * 60;
+            $totalSeconds += $seconds;
         }
+    
+        $hours = floor($totalSeconds / 3600);
+        $minutes = floor(($totalSeconds % 3600) / 60);
+        $formattedTotal = sprintf('%02d:%02d', $hours, $minutes);
+    
+        return $formattedTotal;
     }
-
-//    /**
-//     * @return Chantier[] Returns an array of Chantier objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Chantier
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    
+    
 }

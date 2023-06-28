@@ -1,9 +1,55 @@
-{% extends 'base.html.twig' %}
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Nouveau pointage{% endblock %}
 
 {% block body %}
     <h1>Nouveau pointage</h1>
 
-    {{ include('pointage/_form.html.twig') }}
+    {% if errors is defined and errors is not empty %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+        
+    {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.utilisateur) }}
+            {{ form_widget(form.utilisateur, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.utilisateur) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.chantier) }}
+            {{ form_widget(form.chantier, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.chantier) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.date) }}
+            {{ form_widget(form.date, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.date) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.duree) }}
+            {{ form_widget(form.duree, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.duree) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Pointer</button>
+    {{ form_end(form) }}
 
-    <a href="{{ path('pointage_index') }}">Retour à la liste</a>
+    <h2>Liste des utilisateurs :</h2>
+    <ul>
+        {% for utilisateur in utilisateurs %}
+        <li>{{ utilisateur.matricule }} - {{ utilisateur.nom }} {{ utilisateur.prenom }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Liste des chantiers :</h2>
+    <ul>
+        {% for chantier in chantiers %}
+            <li>{{ chantier.nom }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

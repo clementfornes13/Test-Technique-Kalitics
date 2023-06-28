@@ -38,6 +38,10 @@ class UserRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findUserByMatricule(string $matricule): ?User
+    {
+        return $this->findOneBy(['matricule' => $matricule]);
+    }
 
 //    /**
 //     * @return User[] Returns an array of User objects

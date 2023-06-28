@@ -1,29 +1,37 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\PointageRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Chantier;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use DateTime;
+use DateTimeInterface;
 
 #[ORM\Entity(repositoryClass: PointageRepository::class)]
+#[UniqueEntity(
+    fields: ["utilisateur", "date"],
+    message: "Vous ne pouvez pointer qu'une seule fois par jour pour un utilisateur."
+)]
 class Pointage
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $utilisateur = null;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $utilisateur = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $chantier = null;
+    #[ORM\ManyToOne(targetEntity: Chantier::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Chantier $chantier = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: "date")]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[ORM\Column(type: "time")]
     private ?\DateTimeInterface $duree = null;
 
     public function getId(): ?int
@@ -31,24 +39,24 @@ class Pointage
         return $this->id;
     }
 
-    public function getUtilisateur(): ?string
+    public function getUtilisateur(): ?User
     {
         return $this->utilisateur;
     }
 
-    public function setUtilisateur(string $utilisateur): static
+    public function setUtilisateur(?User $utilisateur): self
     {
         $this->utilisateur = $utilisateur;
 
         return $this;
     }
 
-    public function getChantier(): ?string
+    public function getChantier(): ?Chantier
     {
         return $this->chantier;
     }
 
-    public function setChantier(string $chantier): static
+    public function setChantier(?Chantier $chantier): self
     {
         $this->chantier = $chantier;
 
@@ -60,22 +68,25 @@ class Pointage
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate(?\DateTimeInterface $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getDuree(): ?\DateTimeInterface
+    public function getDuree(): ?DateTime
     {
         return $this->duree;
     }
-
-    public function setDuree(\DateTimeInterface $duree): static
+    public function setDuree(?string $duree): self
     {
-        $this->duree = $duree;
-
+        $this->duree = $duree ? DateTime::createFromFormat('H:i', $duree) : null;
         return $this;
     }
+    public function getDureeInMinutes(): ?int
+    {
+        return $this->duree ? ($this->duree->format('H') * 60) + $this->duree->format('i') : null;
+    }
+
 }

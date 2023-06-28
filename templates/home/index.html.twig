@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Kalitics{% endblock %}</title>
+</head>
+<body>
+    <h1>Kalitics</h1>
+    <nav>
+        <ul>
+            <li><a href="{{ path('user_index') }}">Utilisateurs</a></li>
+            <li><a href="{{ path('chantier_index') }}">Chantiers</a></li>
+            <li><a href="{{ path('pointage_index') }}">Pointages</a></li>
+        </ul>
+    </nav>
+    <div>
+        {% block body %}{% endblock %}
+    </div>
+</body>
+</html>

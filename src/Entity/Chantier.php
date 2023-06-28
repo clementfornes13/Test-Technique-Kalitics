@@ -3,25 +3,35 @@
 namespace App\Entity;
 
 use App\Repository\ChantierRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ChantierRepository::class)]
 class Chantier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: "string", length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+
+    #[ORM\Column(type: "string", length: 255)]
     private ?string $adresse = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+
+    #[ORM\Column(type: "date")]
     private ?\DateTimeInterface $dateDebut = null;
+
+    #[ORM\OneToMany(mappedBy: "chantier", targetEntity: Pointage::class)]
+    private $pointages;
+
+    public function __construct()
+    {
+        $this->pointages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -33,7 +43,7 @@ class Chantier
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
@@ -45,7 +55,7 @@ class Chantier
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAdresse(?string $adresse): self
     {
         $this->adresse = $adresse;
 
@@ -57,10 +67,17 @@ class Chantier
         return $this->dateDebut;
     }
 
-    public function setDateDebut(\DateTimeInterface $dateDebut): static
+    public function setDateDebut(?\DateTimeInterface $dateDebut): self
     {
         $this->dateDebut = $dateDebut;
 
         return $this;
+    }
+    /**
+     * @return Collection|Pointage[]
+    */
+    public function getPointages(): Collection
+    {
+        return $this->pointages;
     }
 }

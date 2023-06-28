@@ -4,18 +4,15 @@
         {{ form_errors(form.nom) }}
         {{ form_widget(form.nom) }}
     </div>
-
     <div>
         {{ form_label(form.prenom, 'Prénom') }}
         {{ form_errors(form.prenom) }}
         {{ form_widget(form.prenom) }}
     </div>
-
     <div>
         {{ form_label(form.matricule, 'Matricule') }}
         {{ form_errors(form.matricule) }}
         {{ form_widget(form.matricule) }}
     </div>
-
     <button type="submit">Sauvegarder</button>
 {{ form_end(form) }}

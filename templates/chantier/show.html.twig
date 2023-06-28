@@ -1,0 +1,39 @@
+{% extends 'home/index.html.twig' %}
+
+{% block body %}
+    <h1>Détails du chantier : {{ chantier.nom }}</h1>
+
+    <div>
+        <label><strong>Nom:</strong></label>
+        {{ chantier.nom }}
+    </div>
+    
+    <div>
+        <label><strong>Adresse:</strong></label>
+        {{ chantier.adresse }}
+    </div>
+
+    <div>
+        <label><strong>Date de début:</strong></label>
+        {{ chantier.dateDebut|date('Y-m-d') }}
+    </div>
+
+    <div>
+        <label><strong>Nombre de personnes pointées:</strong></label>
+        {{ nombre_personnes_pointees }}
+    </div>
+
+    <div>
+        <label><strong>Nombre d'heures cumulées pointées:</strong></label>
+        {{ nombre_heures_cumulees_pointees }}
+    </div>
+
+    <a href="{{ path('chantier_index') }}">Retour à la liste</a>
+    <a href="{{ path('chantier_edit', {'id': chantier.id}) }}">Éditer</a>
+    
+    <form method="post" action="{{ path('chantier_delete', {'id': chantier.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chantier?');">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chantier.id) }}">
+        <button class="btn btn-danger">Supprimer</button>
+    </form>
+{% endblock %}

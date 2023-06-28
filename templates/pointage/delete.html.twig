@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer le pointage{% endblock %}
+
+{% block body %}
+    <h1>Supprimer le pointage</h1>
+    <p>Êtes-vous sûr de vouloir supprimer le pointage ?</p>
+    <form method="post" action="{{ path('pointage_delete', {id: pointage.id}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ pointage.id) }}">
+        <button class="btn btn-danger">Supprimer</button>
+    </form>
+    <a href="{{ path('pointage_index') }}" class="btn btn-secondary">Retour à la liste</a>
+{% endblock %}
