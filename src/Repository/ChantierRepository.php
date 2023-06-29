@@ -6,9 +6,7 @@ use App\Entity\Chantier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Func;
-/**
- * @extends ServiceEntityRepository<Chantier>
- */
+
 class ChantierRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

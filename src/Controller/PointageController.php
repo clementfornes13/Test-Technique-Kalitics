@@ -21,9 +21,12 @@ class PointageController extends AbstractController
 {
     private $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, ChantierRepository $chantierRepository, PointageRepository $pointageRepository, EntityManagerInterface $entityManager)
     {
+        $this->pointageRepository = $pointageRepository;
         $this->userRepository = $userRepository;
+        $this->chantierRepository = $chantierRepository;
+        $this->entityManager = $entityManager;
     }
     #[Route('/pointage', name: 'pointage_index', methods: ['GET'])]
     public function index(PointageRepository $pointageRepository): Response
@@ -55,7 +58,6 @@ class PointageController extends AbstractController
     
                 $pointage->setUtilisateur($utilisateur);
     
-                // Vérifiez que l'utilisateur n'a pas déjà pointé à cette date
                 $existingPointage = $pointageRepository->findOneBy([
                     'date' => $pointage->getDate(),
                     'utilisateur' => $pointage->getUtilisateur(),
@@ -65,7 +67,6 @@ class PointageController extends AbstractController
                     return $this->redirectToRoute('pointage_index');
                 }
     
-                // Obtenez le début et la fin de la semaine pour la date de pointage
                 $weekStart = (clone $pointage->getDate())->modify('monday this week');
                 $weekEnd = (clone $pointage->getDate())->modify('sunday this week');
     
@@ -87,7 +88,7 @@ class PointageController extends AbstractController
             }
         }
         $utilisateurs = $this->userRepository->findAll();
-        $chantiers = $entityManager->getRepository(Chantier::class)->findAll();
+        $chantiers = $this->chantierRepository->findAll();
     
         return $this->render('pointage/new.html.twig', [
             'pointage' => $pointage,

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Pointage;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,12 +79,19 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}', name: 'user_delete', methods: ['POST'])]
+    #[Route('/user/{id}', name: 'user_delete', methods: ['DELETE'])]
     public function delete(Request $request, User $user): Response
     {
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
-
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $pointages = $this->entityManager->getRepository(Pointage::class)->findBy(['utilisateur' => $user]);
+            foreach ($pointages as $pointage) {
+                $this->entityManager->remove($pointage);
+            }
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
+        }
+    
         return $this->redirectToRoute('user_index');
     }
+    
 }

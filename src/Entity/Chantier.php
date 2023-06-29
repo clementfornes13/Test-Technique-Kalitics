@@ -34,6 +34,7 @@ class Chantier
     public function __construct()
     {
         $this->pointages = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -77,9 +78,6 @@ class Chantier
         return $this;
     }
 
-    /**
-     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Pointage[]
-     */
     public function getPointages(): Collection
     {
         return $this->pointages;

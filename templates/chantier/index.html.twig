@@ -17,7 +17,7 @@
             <tr>
                 <td>{{ chantier.nom }}</td>
                 <td>{{ chantier.adresse }}</td>
-                <td>{{ chantier.dateDebut|date('Y-m-d') }}</td>
+                <td>{{ chantier.dateDebut|date('d-m-Y') }}</td>
                 <td>
                     <a href="{{ path('chantier_show', {'id': chantier.id}) }}">Voir</a>
                     <a href="{{ path('chantier_edit', {'id': chantier.id}) }}">Éditer</a>

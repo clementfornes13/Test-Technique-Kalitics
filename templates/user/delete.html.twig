@@ -3,6 +3,9 @@
 {% block body %}
     <h1>Supprimer l'utilisateur</h1>
     <p>Êtes-vous sûr de vouloir supprimer l'utilisateur "{{ user.nom }} {{ user.prenom }}" ?</p>
+    {% if user.pointages is not empty %}
+    <p>Cet utilisateur a des pointages enregistrés. Supprimer cet utilisateur entraînera la suppression des pointages associés.</p>
+    {% endif %}
     <form action="{{ path('user_delete', {id: user.id}) }}" method="post" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">

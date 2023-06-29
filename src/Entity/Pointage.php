@@ -3,7 +3,6 @@ namespace App\Entity;
 
 use App\Repository\PointageRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Chantier;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use DateTime;
 use DateTimeInterface;
@@ -13,7 +12,7 @@ use DateTimeInterface;
     fields: ["utilisateur", "date"],
     message: "Vous ne pouvez pointer qu'une seule fois par jour pour un utilisateur."
 )]
-#[ORM\Table(name: "`pointage`")]
+#[ORM\Table(name: "pointage")]
 class Pointage
 {
     #[ORM\Id]

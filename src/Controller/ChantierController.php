@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Chantier;
+use App\Entity\User;
 use App\Entity\Pointage;
 use App\Form\ChantierType;
 use App\Repository\ChantierRepository;
+use App\Repository\UserRepository;
+use App\Repository\PointageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,18 +37,6 @@ class ChantierController extends AbstractController
         ]);
     }
 
-    #[Route('/chantier/{id}', name: 'chantier_show', methods: ['GET'])]
-    public function show(Chantier $chantier): Response
-    {
-        $nombrePersonnesPointees = $this->chantierRepository->getNombrePersonnesPointees($chantier);
-        $nombreHeuresCumuleesPointees = $this->chantierRepository->getNombreHeuresCumuleesPointees($chantier);
-        
-        return $this->render('chantier/show.html.twig', [
-            'chantier' => $chantier,
-            'nombre_personnes_pointees' => $nombrePersonnesPointees,
-            'nombre_heures_cumulees_pointees' => $nombreHeuresCumuleesPointees,
-        ]);
-    }
     #[Route('/chantier/new', name: 'chantier_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -63,6 +54,19 @@ class ChantierController extends AbstractController
         return $this->render('chantier/new.html.twig', [
             'chantier' => $chantier,
             'form' => $form->createView(),
+        ]);
+    }
+    
+    #[Route('/chantier/{id}', name: 'chantier_show', methods: ['GET'])]
+    public function show(Chantier $chantier): Response
+    {
+        $nombrePersonnesPointees = $this->chantierRepository->getNombrePersonnesPointees($chantier);
+        $nombreHeuresCumuleesPointees = $this->chantierRepository->getNombreHeuresCumuleesPointees($chantier);
+        
+        return $this->render('chantier/show.html.twig', [
+            'chantier' => $chantier,
+            'nombre_personnes_pointees' => $nombrePersonnesPointees,
+            'nombre_heures_cumulees_pointees' => $nombreHeuresCumuleesPointees,
         ]);
     }
 
@@ -91,7 +95,7 @@ class ChantierController extends AbstractController
             $this->entityManager->remove($chantier);
             $this->entityManager->flush();
         }
-    
+
         return $this->redirectToRoute('chantier_index');
     }
 }

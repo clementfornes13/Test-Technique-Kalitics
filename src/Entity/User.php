@@ -4,10 +4,11 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: "`user`")]
+#[ORM\Table(name: "user")]
 class User
 {
 
@@ -26,6 +27,16 @@ class User
     #[ORM\Column(type: "string", length: 255)]
     private ?string $matricule = null;
 
+    /**
+     * @var Collection|Pointage[]
+     */
+    #[ORM\OneToMany(mappedBy: "utilisateur", targetEntity: Pointage::class, cascade: ["remove"])]
+    private Collection $pointages;
+
+    public function __construct()
+    {
+        $this->pointages = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -65,5 +76,14 @@ class User
         $this->matricule = $matricule;
 
         return $this;
+    }
+
+    public function getPointages(): Collection
+    {
+        if (!isset($this->pointages)) {
+            $this->pointages = new ArrayCollection();
+        }
+
+        return $this->pointages;
     }
 }
