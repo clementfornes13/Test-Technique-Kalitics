@@ -142,6 +142,7 @@ L'application offre les fonctionnalités suivantes :
 
 * [Symfony Documentation](https://symfony.com/doc/current/index.html)
 * [Stack Overflow](https://stackoverflow.com/)
+* [GitHub Copilot](https://github.com/features/copilot)
 
 <p align="right">(<a href="#readme-top">Revenir en haut</a>)</p>
 
