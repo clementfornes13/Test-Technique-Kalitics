@@ -74,7 +74,7 @@ Les données sont validées selon des contraintes spécifiques.
    ```
 2. Accédez au répertoire du projet :
    ```sh
-   cd kalitics-projet
+   cd kalitics
    ```
 3. Installez les dépendances du projet à l'aide de Composer :
    ```sh
