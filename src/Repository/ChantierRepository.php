@@ -45,6 +45,8 @@ class ChantierRepository extends ServiceEntityRepository
     
         return $formattedTotal;
     }
+
+    
     
     
 }

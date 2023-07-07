@@ -19,6 +19,11 @@
     </div>
 
     <div>
+        <label><strong>Date de fin:</strong></label>
+        {{ chantier.dateFin|date('d-m-Y') }}
+    </div>
+
+    <div>
         <label><strong>Nombre de personnes pointées:</strong></label>
         {{ nombre_personnes_pointees }}
     </div>

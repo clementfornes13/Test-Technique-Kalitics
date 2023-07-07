@@ -31,6 +31,9 @@ class Chantier
     #[ORM\OneToMany(mappedBy: "chantier", targetEntity: Pointage::class)]
     private Collection $pointages;
 
+    #[ORM\Column(type: "date")]
+    private ?\DateTimeInterface $dateFin = null;
+
     public function __construct()
     {
         $this->pointages = new ArrayCollection();
@@ -81,5 +84,17 @@ class Chantier
     public function getPointages(): Collection
     {
         return $this->pointages;
+    }
+
+    public function setDateFin(?\DateTimeInterface $dateFin): self
+    {
+        $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
     }
 }
